@@ -1,0 +1,22 @@
+{
+  "name": "set-permission",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "aws-sdk": "^2.72.0"
+  },
+  "devDependencies": {
+    "run-local-lambda": "^1.1.1"
+  },
+  "scripts": {
+    "test": "run-local-lambda --file index.js –-event tests/event.json",
+    "preplan": "rm -rf set-permission.zip && zip -r set-permission.zip * -x *.zip *.json *.log",
+    "plan": "terraform plan --out lambda",
+    "jPlan": "terraform plan --out lambda",
+    "deploy": "terraform apply lambda"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
