@@ -27,6 +27,29 @@ resource "aws_iam_role_policy_attachment" "lambda-s3-execution-role-lambda-execu
   policy_arn = "arn:aws:iam::aws:policy/AWSLambdaExecute"
 }
 
+resource "aws_iam_role_policy_attachment" "lambda-s3-execution-role-update-object-acl-policy-attachment" {
+  role = "${aws_iam_role.lambda-s3-execution-role.name}"
+  policy_arn = "${aws_iam_policy.update_object_acl_in_transcoded_bucket.arn}"
+}
+
+resource "aws_iam_policy" "update_object_acl_in_transcoded_bucket" {
+  name = "update_object_acl_in_transcoded_bucket"
+  policy = <<-EOF
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Action": [
+          "s3:PutObjectAcl"
+        ],
+        "Effect": "Allow",
+        "Resource": "${aws_s3_bucket.tto-serverless-video-transcoded.arn}/*" 
+      }
+    ]
+  }
+  EOF
+}
+
 data "aws_iam_policy_document" "default-elastictranscoder-policy-document" {
   statement  {
     sid = "1"
