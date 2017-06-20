@@ -1,2 +1,5 @@
 */*.tfstate*
 */*/node_modules
+*/plan
+*/.terraform
+*/*/.terraform
