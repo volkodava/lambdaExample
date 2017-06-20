@@ -18,7 +18,10 @@ resource "aws_sns_topic_policy" "custom" {
         "SNS:AddPermission",
         "SNS:RemovePermission",
         "SNS:DeleteTopic",
-        "SNS:Publish"
+        "SNS:Subscribe",
+        "SNS:ListSubscriptionsByTopic",
+        "SNS:Publish",
+        "SNS:Receive"
       ],
       "Resource": "${aws_sns_topic.transcoded-video-notification.arn}",
       "Condition": {
@@ -41,3 +44,6 @@ resource "aws_s3_bucket_notification" "transcode_bucket_notification" {
   }
 }
 
+output "transcoded-video-notification-arn"{
+  value = "${aws_sns_topic.transcoded-video-notification.arn}"
+}
