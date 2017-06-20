@@ -3,3 +3,5 @@
 */plan
 */.terraform
 */*/.terraform
+*/*/*.tfstate*
+*/*/*.zip
