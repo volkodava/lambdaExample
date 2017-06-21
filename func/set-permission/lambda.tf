@@ -29,6 +29,14 @@ resource "aws_lambda_function" "func" {
   role = "${data.terraform_remote_state.infra.lambda-s3-execution-role-arn}"
 }
 
+resource "aws_lambda_permission" "with_sns" {
+  statement_id = "AllowExecutionFromSNS"
+  action = "lambda:InvokeFunction"
+  function_name = "${aws_lambda_function.func.arn}"
+  principal = "sns.amazonaws.com"
+  source_arn = "${data.terraform_remote_state.infra.transcoded-video-notification-arn}"
+}
+
 resource "aws_sns_topic_subscription" "update_acl_subscription" {
   topic_arn = "${data.terraform_remote_state.infra.transcoded-video-notification-arn}"
   protocol = "lambda"
