@@ -113,6 +113,35 @@ resource "aws_iam_role_policy_attachment" "default-elastic-transcoder-role-polic
   policy_arn = "${aws_iam_policy.default-elastictranscoder-policy.arn}"
 }
 
+resource "aws_iam_role" "api-gateway-lambda-exec-role" {
+  name = "api-gateway-lambda-exec-role"
+  assume_role_policy = <<-EOF
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Action": "sts:AssumeRole",
+        "Principal": {
+          "Service": "lambda.amazonaws.com"
+        },
+        "Effect": "Allow",
+        "Sid": ""
+      }
+    ]
+  }
+  EOF
+}
+
+resource "aws_iam_role_policy_attachment" "api-role-execution" {
+  role = "${aws_iam_role.api-gateway-lambda-exec-role.name}"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+
+}
+
 output "lambda-s3-execution-role-arn" {
    value = "${aws_iam_role.lambda-s3-execution-role.arn}" 
+}
+
+output "api-gateway-lambda-exec-role-arn"{
+  value = "${aws_iam_role.api-gateway-lambda-exec-role.arn}"
 }
